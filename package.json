@@ -1,0 +1,23 @@
+{
+  "name": "finapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victorcaio06/finAPI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/victorcaio06/finAPI/issues"
+  },
+  "homepage": "https://github.com/victorcaio06/finAPI#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
