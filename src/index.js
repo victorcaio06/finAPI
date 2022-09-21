@@ -12,11 +12,17 @@ app.get('/', (req, res) => {
 
 app.post('/account', (req, res) => {
   const { cpf, name } = req.body;
-  const _id = uuidv4();
+  const customersAlreadyExists = customers.some(
+    (customers) => customers.cpf === cpf
+  );
 
-  customers.push({ cpf, name, _id, statement: [] });
+  if (customersAlreadyExists) {
+    return res.status(400).send({ error: 'Existing CPF' });
+  }
 
-  return res.status(201).send({ message: 'created' });
+  customers.push({ cpf, name, _id: uuidv4(), statement: [] });
+
+  return res.status(201).send({ message: 'Created' });
 });
 
 app.listen(3333);
