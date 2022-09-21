@@ -25,4 +25,11 @@ app.post('/account', (req, res) => {
   return res.status(201).send({ message: 'Created' });
 });
 
+app.get('/statement/:cpf', (req, res) => {
+  const { cpf } = req.params;
+  const searchAccount = customers.find((customers) => customers.cpf === cpf);
+  
+  return res.json(searchAccount.statement);
+});
+
 app.listen(3333);
