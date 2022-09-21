@@ -25,8 +25,8 @@ app.post('/account', (req, res) => {
   return res.status(201).send({ message: 'Created' });
 });
 
-app.get('/statement/:cpf', (req, res) => {
-  const { cpf } = req.params;
+app.get('/statement', (req, res) => {
+  const { cpf } = req.headers;
   const searchAccount = customers.find((customers) => customers.cpf === cpf);
   if (!searchAccount) {
     return res.status(400).send({ error: 'Account not found' });
