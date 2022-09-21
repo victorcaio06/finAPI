@@ -28,7 +28,9 @@ app.post('/account', (req, res) => {
 app.get('/statement/:cpf', (req, res) => {
   const { cpf } = req.params;
   const searchAccount = customers.find((customers) => customers.cpf === cpf);
-  
+  if (!searchAccount) {
+    return res.status(400).send({ error: 'Account not found' });
+  }
   return res.json(searchAccount.statement);
 });
 
