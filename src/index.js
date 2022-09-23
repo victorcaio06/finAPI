@@ -6,6 +6,17 @@ app.use(express.json());
 
 const customers = [];
 
+function verifyExistsAccountCPF(req, res, next) {
+  const { cpf } = req.headers;
+  const searchAccount = customers.find((customers) => customers.cpf === cpf);
+  if (!searchAccount) {
+    return res.status(400).send({ error: 'Account not found' });
+  }
+
+  req.searchAccount = searchAccount;
+  return next();
+}
+
 app.get('/', (req, res) => {
   return res.json({ message: 'Tudo ok' });
 });
@@ -25,12 +36,8 @@ app.post('/account', (req, res) => {
   return res.status(201).send({ message: 'Created' });
 });
 
-app.get('/statement', (req, res) => {
-  const { cpf } = req.headers;
-  const searchAccount = customers.find((customers) => customers.cpf === cpf);
-  if (!searchAccount) {
-    return res.status(400).send({ error: 'Account not found' });
-  }
+app.get('/statement', verifyExistsAccountCPF, (req, res) => {
+  const { searchAccount } = req;
   return res.json(searchAccount.statement);
 });
 
