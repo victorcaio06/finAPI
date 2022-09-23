@@ -41,4 +41,18 @@ app.get('/statement', verifyExistsAccountCPF, (req, res) => {
   return res.json(searchAccount.statement);
 });
 
+app.post('/deposit', verifyExistsAccountCPF, (req, res) => {
+  const { searchAccount } = req;
+  const { description, amount } = req.body;
+  const statementOperation = {
+    description,
+    amount,
+    created_at: new Date(),
+    type: 'Credit',
+  };
+  searchAccount.statement = statementOperation;
+
+  return res.status(201).send({ message: 'Deposit ok' });
+});
+
 app.listen(3333);
