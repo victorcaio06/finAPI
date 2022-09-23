@@ -50,8 +50,7 @@ app.post('/deposit', verifyExistsAccountCPF, (req, res) => {
     created_at: new Date(),
     type: 'Credit',
   };
-  searchAccount.statement = statementOperation;
-
+  searchAccount.statement = statementOperation; 
   return res.status(201).send({ message: 'Deposit ok' });
 });
 
