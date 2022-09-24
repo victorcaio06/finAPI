@@ -50,8 +50,20 @@ app.post('/deposit', verifyExistsAccountCPF, (req, res) => {
     created_at: new Date(),
     type: 'Credit',
   };
-  searchAccount.statement = statementOperation; 
+  searchAccount.statement.push(statementOperation);
   return res.status(201).send({ message: 'Deposit ok' });
+});
+
+app.get('/statement/date', verifyExistsAccountCPF, (req, res) => {
+  const { searchAccount } = req;
+  const { date } = req.query;
+  const dateFormat = new Date(date + ' 00:00');
+  const searchByDate = searchAccount.statement.filter(
+    (statement) =>
+      statement.created_at.toDateString() ===
+      new Date(dateFormat).toDateString()
+  );
+  return res.json(searchByDate);
 });
 
 app.listen(3333);
