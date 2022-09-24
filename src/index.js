@@ -38,7 +38,7 @@ app.post('/account', (req, res) => {
 
 app.get('/statement', verifyExistsAccountCPF, (req, res) => {
   const { searchAccount } = req;
-  return res.json(searchAccount.statement);
+  return res.json(searchAccount);
 });
 
 app.post('/deposit', verifyExistsAccountCPF, (req, res) => {
@@ -64,6 +64,13 @@ app.get('/statement/date', verifyExistsAccountCPF, (req, res) => {
       new Date(dateFormat).toDateString()
   );
   return res.json(searchByDate);
+});
+
+app.put('/account', verifyExistsAccountCPF, (req, res) => {
+  const { searchAccount } = req;
+  const { name } = req.body;
+  searchAccount.name = name;
+  return res.status(201).send({ message: 'Updated' });
 });
 
 app.listen(3333);
