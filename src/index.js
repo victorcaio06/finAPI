@@ -75,7 +75,10 @@ app.put('/account', verifyExistsAccountCPF, (req, res) => {
 
 app.get('/account', verifyExistsAccountCPF, (req, res) => {
   const { searchAccount } = req;
-  return res.status(200).send(searchAccount);
+  const showAccountWithoutId = { ...searchAccount, _id: undefined };
+  return res.status(200).send(showAccountWithoutId);
 });
+
+app.delete('/delete', verifyExistsAccountCPF, (req, res) => {});
 
 app.listen(3333);
