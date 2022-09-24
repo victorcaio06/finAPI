@@ -79,6 +79,11 @@ app.get('/account', verifyExistsAccountCPF, (req, res) => {
   return res.status(200).send(showAccountWithoutId);
 });
 
-app.delete('/delete', verifyExistsAccountCPF, (req, res) => {});
+app.delete('/account', verifyExistsAccountCPF, (req, res) => {
+  const { searchAccount } = req;
+  customers.splice(searchAccount, 1);
+
+  return res.status(204).json({});
+});
 
 app.listen(3333);
