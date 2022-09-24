@@ -36,11 +36,6 @@ app.post('/account', (req, res) => {
   return res.status(201).send({ message: 'Created' });
 });
 
-app.get('/statement', verifyExistsAccountCPF, (req, res) => {
-  const { searchAccount } = req;
-  return res.json(searchAccount);
-});
-
 app.post('/deposit', verifyExistsAccountCPF, (req, res) => {
   const { searchAccount } = req;
   const { description, amount } = req.body;
@@ -52,6 +47,11 @@ app.post('/deposit', verifyExistsAccountCPF, (req, res) => {
   };
   searchAccount.statement.push(statementOperation);
   return res.status(201).send({ message: 'Deposit ok' });
+});
+
+app.get('/statement', verifyExistsAccountCPF, (req, res) => {
+  const { searchAccount } = req;
+  return res.json(searchAccount.statement);
 });
 
 app.get('/statement/date', verifyExistsAccountCPF, (req, res) => {
@@ -71,6 +71,11 @@ app.put('/account', verifyExistsAccountCPF, (req, res) => {
   const { name } = req.body;
   searchAccount.name = name;
   return res.status(201).send({ message: 'Updated' });
+});
+
+app.get('/account', verifyExistsAccountCPF, (req, res) => {
+  const { searchAccount } = req;
+  return res.status(200).send(searchAccount);
 });
 
 app.listen(3333);
