@@ -17,6 +17,17 @@ function verifyExistsAccountCPF(req, res, next) {
   return next();
 }
 
+function getBalance(statement) {
+  const balance = statement.reduce((acc, operation) => {
+    if(operation.type === 'Credit') {
+      return acc + operation.amount;
+    }else {
+      return acc - operation.amount;
+    }
+  }, 0);
+  return balance;
+}
+
 app.get('/', (req, res) => {
   return res.json({ message: 'Tudo ok' });
 });
@@ -26,7 +37,6 @@ app.post('/account', (req, res) => {
   const customersAlreadyExists = customers.some(
     (customers) => customers.cpf === cpf
   );
-
   if (customersAlreadyExists) {
     return res.status(400).send({ error: 'Existing CPF' });
   }
@@ -48,6 +58,8 @@ app.post('/deposit', verifyExistsAccountCPF, (req, res) => {
   searchAccount.statement.push(statementOperation);
   return res.status(201).send({ message: 'Deposit ok' });
 });
+
+
 
 app.get('/statement', verifyExistsAccountCPF, (req, res) => {
   const { searchAccount } = req;
@@ -82,8 +94,14 @@ app.get('/account', verifyExistsAccountCPF, (req, res) => {
 app.delete('/account', verifyExistsAccountCPF, (req, res) => {
   const { searchAccount } = req;
   customers.splice(searchAccount, 1);
-
   return res.status(204).json({});
+});
+
+app.get('/balance', verifyExistsAccountCPF, (req, res) => {
+  const { searchAccount } = req;
+  const balance = getBalance(searchAccount.statement);
+
+  return res.status(200).json(balance);
 });
 
 app.listen(3333);
